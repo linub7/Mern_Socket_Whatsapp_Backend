@@ -1,12 +1,12 @@
+const logger = require('../config/logger.config');
 const AppError = require('../utils/AppError');
 
 const errorHandler = (err, req, res, next) => {
-  // eslint-disable-next-line node/no-unsupported-features/es-syntax
   let error = { ...err };
   error.message = err.message;
 
   // Log to console for dev
-  console.log(err.stack);
+  logger.error(err.stack);
 
   // Mongoose bad objectId
   if (err.name === 'CastError') {

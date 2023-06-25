@@ -1,9 +1,10 @@
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const logger = require('./config/logger.config');
 
 process.on('uncaughtException', (err) => {
-  console.log('UnCaught REJECTION! Shutting Down ...');
-  console.log(err);
+  logger.error('UnCaught REJECTION! Shutting Down ...');
+  logger.error(err);
   process.exit(1);
 });
 
@@ -17,14 +18,22 @@ const app = require('./app');
 
 const port = process.env.PORT || 8000;
 const server = app.listen(port, () =>
-  console.log(`Server is running on port ${port}`)
+  logger.info(`Server is running on port ${port}`)
 );
 
 // Handle unhandled promise rejection
-// eslint-disable-next-line no-unused-vars
 process.on('unhandledRejection', (err, promise) => {
-  console.log('UnHandled REJECTION! Shutting Down ...');
-  console.log(`Error: ${err.name} ${err.message}`);
+  logger.error('UnHandled REJECTION! Shutting Down ...');
+  logger.error(`Error: ${err.name} ${err.message}`);
+  // close sever and exit process
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+// SIGTERM
+process.on('SIGTERM', (err) => {
+  logger.error(err);
   // close sever and exit process
   server.close(() => {
     process.exit(1);
