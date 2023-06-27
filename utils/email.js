@@ -1,24 +1,23 @@
 const nodemailer = require('nodemailer');
 
+// async..await is not allowed in global scope, must use a wrapper
 const sendEmail = async (options) => {
-  // 1) Create a transporter
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
+    service: process.env.EMAIL_SERVICE,
     auth: {
       user: process.env.EMAIL_USERNAME,
       pass: process.env.EMAIL_PASSWORD,
     },
   });
-  // 2) Define Email Options
-  const mailOptions = {
-    from: 'Mohammad Hadi<hello@mohammad.io>',
+
+  const emailData = {
+    from: process.env.EMAIL_FROM,
     to: options.email,
     subject: options.subject,
-    text: options.message,
-    // html: TODO
+    html: options.message,
   };
-  // 3) Actually send the email
-  await transporter.sendMail(mailOptions);
+
+  const result = await transporter.sendMail(emailData);
 };
 
 module.exports = sendEmail;
