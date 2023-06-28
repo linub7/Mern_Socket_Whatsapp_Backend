@@ -6,6 +6,7 @@ const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const sendEmail = require('../utils/email');
+const { uploadImageToCloudinary } = require('../utils/imageUpload');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -41,12 +42,19 @@ exports.signup = asyncHandler(async (req, res, next) => {
     body: { name, email, password, passwordConfirm, passwordChangedAt, status },
   } = req;
 
+  let picture;
+  if (req.file) {
+    const { url, public_id } = await uploadImageToCloudinary(req.file?.path);
+    picture = { url, public_id };
+  }
+
   const newUser = await User.create({
     name,
     email,
     password,
     passwordConfirm,
     status,
+    picture: picture ? picture : undefined,
     passwordChangedAt,
   });
 
