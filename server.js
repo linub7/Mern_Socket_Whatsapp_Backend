@@ -18,7 +18,7 @@ connectDB();
 const app = require('./app');
 
 // mongo db debug mode
-if (process.env.NODE_ENV) mongoose.set('debug', true);
+// if (process.env.NODE_ENV) mongoose.set('debug', true);
 
 const port = process.env.PORT || 8000;
 const server = app.listen(port, () =>

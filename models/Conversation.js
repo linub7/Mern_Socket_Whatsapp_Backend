@@ -9,6 +9,11 @@ const ConversationSchema = new Schema(
       required: [true, 'Conversation name is required!'],
       trim: true,
     },
+    picture: {
+      type: Object,
+      url: String,
+      public_id: String,
+    },
     isGroup: {
       type: Boolean,
       required: true,
@@ -32,20 +37,21 @@ const ConversationSchema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-ConversationSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'users',
-    select: 'name email picture',
-  });
-  this.populate({
-    path: 'admin',
-    select: 'name email status picture',
-  });
-  this.populate({
-    path: 'latestMessage',
-  });
+// ConversationSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'users',
+//     select: 'name email picture',
+//   });
+//   this.populate({
+//     path: 'admin',
+//     select: 'name email status picture',
+//   });
+//   this.populate({
+//     path: 'latestMessage',
+//     select: 'message',
+//   });
 
-  next();
-});
+//   next();
+// });
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

@@ -51,6 +51,7 @@ exports.createOrOpenConversation = asyncHandler(async (req, res, next) => {
 
     const newConversation = await Conversation.create({
       name: receiver.name,
+      picture: receiver?.picture,
       isGroup: false,
       users: [senderId, receiver._id],
     });
@@ -79,7 +80,8 @@ exports.getConversations = asyncHandler(async (req, res, next) => {
   const conversations = await Conversation.find({
     users: { $elemMatch: { $eq: user._id } },
   })
-    .populate('latestMessage.sender', 'name email status picture')
+    .populate('users', 'name picture')
+    .populate('latestMessage', 'message sender')
     .sort('-updatedAt');
 
   return res.json({
