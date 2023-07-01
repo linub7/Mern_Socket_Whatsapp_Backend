@@ -81,7 +81,7 @@ exports.getConversations = asyncHandler(async (req, res, next) => {
     users: { $elemMatch: { $eq: user._id } },
   })
     .populate('users', 'name picture')
-    .populate('latestMessage', 'message sender')
+    .populate('latestMessage', 'message sender createdAt')
     .sort('-updatedAt');
 
   return res.json({
