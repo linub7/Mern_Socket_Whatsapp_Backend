@@ -60,7 +60,10 @@ exports.createOrOpenConversation = asyncHandler(async (req, res, next) => {
 
     const populatedNewConversation = await Conversation.findOne({
       _id: newConversation._id,
-    });
+    })
+      .populate('users', 'name picture')
+      .populate('latestMessage', 'message sender createdAt');
+
     return res.json({
       status: 'success',
       data: { data: populatedNewConversation },

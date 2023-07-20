@@ -5,13 +5,14 @@ const AppError = require('../utils/AppError');
 const handleFactory = require('./handleFactory');
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
+const { uploadImageToCloudinary } = require('../utils/imageUpload');
 
 exports.sendMessage = asyncHandler(async (req, res, next) => {
   const {
     user,
-    body: { message, conversation, files },
+    body: { message, conversation },
   } = req;
-  if ((!message && !files) || !conversation)
+  if (!conversation)
     return next(
       new AppError('Please provide message or files and conversation id', 400)
     );
@@ -34,6 +35,18 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
           403
         )
       );
+    }
+  }
+
+  if (!message && req.files?.length < 1)
+    return next(new AppError('Please provide a message or files!', 400));
+
+  let files = [];
+  if (req.files) {
+    for (const file of req.files) {
+      const { url, public_id } = await uploadImageToCloudinary(file?.path);
+      const payload = { url, public_id };
+      files.push(payload);
     }
   }
 

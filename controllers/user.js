@@ -17,7 +17,7 @@ exports.searchUsers = asyncHandler(async (req, res, next) => {
       { name: { $regex: searchTerm, $options: 'i' } },
       { email: { $regex: searchTerm, $options: 'i' } },
     ],
-  });
+  }).select('name picture status');
 
   return res.json({
     status: 'success',
