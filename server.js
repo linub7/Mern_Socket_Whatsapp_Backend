@@ -1,7 +1,8 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const { Server } = require('socket.io');
 const connectDB = require('./config/db');
 const logger = require('./config/logger.config');
+const SocketServer = require('./SocketServer');
 
 process.on('uncaughtException', (err) => {
   logger.error('UnCaught REJECTION! Shutting Down ...');
@@ -17,13 +18,23 @@ connectDB();
 
 const app = require('./app');
 
-// mongo db debug mode
-// if (process.env.NODE_ENV) mongoose.set('debug', true);
-
 const port = process.env.PORT || 8000;
 const server = app.listen(port, () =>
   logger.info(`Server is running on port ${port}`)
 );
+
+// socket.io
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: process.env.FRONTEND_URL,
+  },
+});
+
+io.on('connection', (socket) => {
+  logger.info('socket io connected successfully!');
+  SocketServer(socket);
+});
 
 // Handle unhandled promise rejection
 process.on('unhandledRejection', (err, promise) => {

@@ -15,7 +15,7 @@ const errorHandler = require('./middleware/error');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 // Set Security HTTP headers
 app.use(helmet());
