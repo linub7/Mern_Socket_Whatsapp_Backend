@@ -37,21 +37,21 @@ const ConversationSchema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// ConversationSchema.pre(/^find/, function (next) {
-//   this.populate({
-//     path: 'users',
-//     select: 'name email picture',
-//   });
-//   this.populate({
-//     path: 'admin',
-//     select: 'name email status picture',
-//   });
-//   this.populate({
-//     path: 'latestMessage',
-//     select: 'message',
-//   });
+ConversationSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'users',
+    select: 'name',
+  });
+  // this.populate({
+  //   path: 'admin',
+  //   select: 'name email status picture',
+  // });
+  // this.populate({
+  //   path: 'latestMessage',
+  //   select: 'message',
+  // });
 
-//   next();
-// });
+  next();
+});
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

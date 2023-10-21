@@ -27,6 +27,14 @@ const MessageSchema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+MessageSchema.pre('save', function (next) {
+  this.populate({
+    path: 'conversation',
+    select: 'users',
+  });
+  next();
+});
+
 // MessageSchema.pre(/^find/, function (next) {
 //   this.populate({
 //     path: 'sender',
