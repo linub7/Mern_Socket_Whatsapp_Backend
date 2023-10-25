@@ -16,7 +16,7 @@ module.exports = (socket) => {
     console.log('new message received', message);
     const { conversation } = message;
     if (!conversation.users) return;
-    conversation?.users?.map((user) => {
+    conversation?.users?.forEach((user) => {
       if (user?._id === message?.sender?._id) return;
       socket.in(user?._id).emit('receive-message', message);
     });

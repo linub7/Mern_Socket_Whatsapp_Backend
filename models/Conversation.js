@@ -40,7 +40,7 @@ const ConversationSchema = new Schema(
 ConversationSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'users',
-    select: 'name',
+    select: 'name picture',
   });
   // this.populate({
   //   path: 'admin',

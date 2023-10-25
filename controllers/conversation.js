@@ -50,8 +50,8 @@ exports.createOrOpenConversation = asyncHandler(async (req, res, next) => {
     if (!receiver) return next(new AppError('User not found!', 404));
 
     const newConversation = await Conversation.create({
-      name: receiver.name,
-      picture: receiver?.picture,
+      name: 'conversation name',
+      picture: 'conversation mistake',
       isGroup: false,
       users: [senderId, receiver._id],
     });
