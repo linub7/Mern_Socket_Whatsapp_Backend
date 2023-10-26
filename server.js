@@ -33,7 +33,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   logger.info('socket io connected successfully!');
-  SocketServer(socket);
+  SocketServer(socket, io);
 });
 
 // Handle unhandled promise rejection
