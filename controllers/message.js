@@ -2,7 +2,6 @@ const { isValidObjectId } = require('mongoose');
 
 const asyncHandler = require('../middleware/async');
 const AppError = require('../utils/AppError');
-const handleFactory = require('./handleFactory');
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const { uploadImageToCloudinary } = require('../utils/imageUpload');

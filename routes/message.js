@@ -4,7 +4,7 @@ const { isValidObjectId } = require('mongoose');
 
 const { sendMessage, getMessages } = require('../controllers/message');
 const { protect } = require('../middleware/auth');
-const { uploadImage } = require('../middleware/multer');
+const { uploadFile } = require('../middleware/multer');
 const AppError = require('../utils/AppError');
 
 const router = express.Router();
@@ -20,6 +20,6 @@ router.route('/messages/:id').get(trimRequest.all, protect, getMessages);
 
 router
   .route('/messages')
-  .post(trimRequest.all, protect, uploadImage.array('files'), sendMessage);
+  .post(trimRequest.all, protect, uploadFile.array('files', 4), sendMessage);
 
 module.exports = router;

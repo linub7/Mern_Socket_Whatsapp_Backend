@@ -10,7 +10,7 @@ const {
   signoutUser,
 } = require('../controllers/auth');
 const { protect } = require('../middleware/auth');
-const { uploadImage } = require('../middleware/multer');
+const { uploadFile } = require('../middleware/multer');
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.patch(
 router.post(
   '/auth/signup',
   trimRequest.all,
-  uploadImage.single('picture'),
+  uploadFile.single('picture'),
   signup
 );
 router.post('/auth/signin', trimRequest.all, signin);
