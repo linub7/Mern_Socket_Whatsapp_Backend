@@ -43,8 +43,7 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   let files = [];
   if (req.files) {
     for (const file of req.files) {
-      const { url, public_id } = await uploadImageToCloudinary(file?.path);
-      const payload = { url, public_id };
+      const payload = await uploadImageToCloudinary(file?.path);
       files.push(payload);
     }
   }

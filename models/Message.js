@@ -19,8 +19,6 @@ const MessageSchema = new Schema(
     files: [
       {
         type: Object,
-        url: String,
-        public_id: String,
       },
     ],
   }, // without toJSON: { virtuals: true }, toObject: { virtuals: true } our virtual field will now show
