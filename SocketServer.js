@@ -9,6 +9,9 @@ module.exports = (socket, io) => {
     }
     // send online users
     io.emit('get-online-users', onlineUsers);
+
+    // send socket id
+    io.emit('setup-socket', socket.id);
   });
 
   // socket disconnect
