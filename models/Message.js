@@ -33,6 +33,15 @@ MessageSchema.pre('save', function (next) {
   next();
 });
 
+MessageSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'sender',
+    select: 'name',
+  });
+
+  next();
+});
+
 // MessageSchema.pre(/^find/, function (next) {
 //   this.populate({
 //     path: 'sender',

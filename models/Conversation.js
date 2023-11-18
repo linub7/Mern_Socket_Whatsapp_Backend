@@ -42,10 +42,10 @@ ConversationSchema.pre(/^find/, function (next) {
     path: 'users',
     select: 'name picture',
   });
-  // this.populate({
-  //   path: 'admin',
-  //   select: 'name email status picture',
-  // });
+  this.populate({
+    path: 'admin',
+    select: 'name picture',
+  });
   // this.populate({
   //   path: 'latestMessage',
   //   select: 'message',

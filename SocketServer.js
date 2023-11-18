@@ -44,4 +44,16 @@ module.exports = (socket, io) => {
   socket.on('stop-typing', (conversation) => {
     socket.in(conversation).emit('stop-typing');
   });
+
+  // call
+  socket.on('call-user', (data) => {
+    const { userToCall, signal, from, name, picture } = data;
+    const userSocket = onlineUsers?.find((el) => el.userId === userToCall);
+    io.to(userSocket?.socketId).emit('call-user', {
+      signal,
+      from,
+      name,
+      picture,
+    });
+  });
 };

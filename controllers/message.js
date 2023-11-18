@@ -24,17 +24,25 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   if (!isConversationExist)
     return next(new AppError('Conversation not found!', 404));
 
-  if (!isConversationExist.isGroup) {
-    const isMeAllowedToSendMessageToThisConversation =
-      await Conversation.findOne({ _id: conversation, users: user._id });
-    if (!isMeAllowedToSendMessageToThisConversation) {
-      return next(
-        new AppError(
-          'You can not send a message to a foreign conversation!',
-          403
-        )
-      );
-    }
+  // if (!isConversationExist.isGroup) {
+  //   const isMeAllowedToSendMessageToThisConversation =
+  //     await Conversation.findOne({ _id: conversation, users: user._id });
+  //   if (!isMeAllowedToSendMessageToThisConversation) {
+  //     return next(
+  //       new AppError(
+  //         'You can not send a message to a foreign conversation!',
+  //         403
+  //       )
+  //     );
+  //   }
+  // }
+  const isMeAllowedToSendMessageToThisConversation = await Conversation.findOne(
+    { _id: conversation, users: user._id }
+  );
+  if (!isMeAllowedToSendMessageToThisConversation) {
+    return next(
+      new AppError('You can not send a message to a foreign conversation!', 403)
+    );
   }
 
   if (!message && req.files?.length < 1)
@@ -83,7 +91,9 @@ exports.getMessages = asyncHandler(async (req, res, next) => {
 
   const conversationMessages = await Message.find({
     conversation: conversationId,
-  }).populate({ path: 'sender', select: 'name picture' });
+  })
+    .populate({ path: 'sender', select: 'name picture' })
+    .populate({ path: 'conversation', select: 'isGroup' });
 
   return res.json({
     status: 'success',
