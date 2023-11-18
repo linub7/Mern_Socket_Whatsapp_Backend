@@ -65,12 +65,16 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
 
   isConversationExist.latestMessage = newMessage._id;
 
+  const populatedMessage = await Message.findById(newMessage?._id)
+    .populate({ path: 'sender', select: 'name picture' })
+    .populate({ path: 'conversation', select: 'isGroup' });
+
   await isConversationExist.save({ validateBeforeSave: false });
 
   return res.json({
     status: 'success',
     data: {
-      data: newMessage,
+      data: populatedMessage,
     },
   });
 });
