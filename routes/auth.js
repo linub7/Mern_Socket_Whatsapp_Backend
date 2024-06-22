@@ -30,6 +30,6 @@ router.post(
   signup
 );
 router.post('/auth/signin', trimRequest.all, signin);
-router.get('/auth/signout', trimRequest.all, protect, signoutUser);
+router.get('/auth/signout', trimRequest.all, signoutUser);
 
 module.exports = router;
